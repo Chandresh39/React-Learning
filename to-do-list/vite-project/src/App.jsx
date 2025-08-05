@@ -1,9 +1,10 @@
 import React from 'react'
+import './App.css'
 
 const App = () => {
   return (
     <>
-    <div className="todo-input">
+    <div className="task-input">
       <h1>TO DO LIST</h1>
       <input type="text" placeholder="Enter your task..." />
       <button>Add Task</button>
