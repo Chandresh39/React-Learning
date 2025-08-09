@@ -1,12 +1,10 @@
 import React from 'react'
-import DisplayTask from './DisplayTask'
 
-const InputTask = () => {
-
+function InputTask({task, writeTask, addTask}) {
   return (
     <div className="input-container">
-        <input type="text" placeholder='Enter your task...' id='task-input' required />
-        <button id='btn-add-task' onClick={DisplayTask}>Add Task</button>
+        <input type="text" placeholder='Enter your task...' id='task-input' value={task} onChange={writeTask} />
+        <button id='btn-add-task'onClick={addTask} >Add Task</button>
     </div>
   )
 }

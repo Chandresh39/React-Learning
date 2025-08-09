@@ -1,14 +1,17 @@
 import React from 'react'
+import AddTasks from './AddTasks'
 
-function DisplayTask() {
+function DisplayTask({todoList, delTodo}) {
   return (
-    <div className="display-container">
-        <p></p>
-        <div className='actions'>
-          <input type="checkbox" id='task-check' />
-          <button id='btn-delete'>Delete</button>
-        </div>
-    </div>
+    <>
+        {
+            todoList.map((todo, index) => {
+                return (
+                    <AddTasks todo={todo} index={index} delTodo={delTodo} />
+                )
+            })
+        }
+    </>
     )
 }
 
