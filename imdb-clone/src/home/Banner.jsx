@@ -11,6 +11,8 @@ function Banner() {
             >
                 <div className='p-2 bg-slate-400/40 w-full text-center'>Mahavatar Narasimha</div>
             </div>
+
+            
         </>
     );
 }
