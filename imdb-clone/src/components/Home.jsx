@@ -1,10 +1,13 @@
 import React from 'react'
+import Banner from '../home/Banner'
+import MovieList from '../home/MovieList'
 
 function Home() {
   return (
-    <div>
-      <h1>Home component</h1>
-    </div>
+    <>
+      <Banner />
+      <MovieList />
+    </>
   )
 }
 
