@@ -1,9 +1,3 @@
-Got it ✅
-I’ll update your **React.js notes MD file** and add a new **API Example** section using The Movie Database (TMDB) API to fetch and display the latest movies.
-
-Here’s the **updated Markdown file code**:
-
-````md
 # React.js Practice Notes  
 
 ## 1. Create New Project with Vite  
