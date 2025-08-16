@@ -1,12 +1,28 @@
-# React + Vite
+# Counter App — Increase & Decrease Count (0 to 20)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Initialize State
 
-Currently, two official plugins are available:
+```jsx
+const [count, setCount] = useState(0);
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Functions with Conditional Statements
 
-## Expanding the ESLint configuration
+```jsx
+const decrement = () => {
+  if (count <= 0) return;
+  setCount(count - 1);
+};
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+const increment = () => {
+  if (count >= 20) return;
+  setCount(count + 1);
+};
+```
+
+### Buttons with `onClick` Event
+
+```jsx
+<button onClick={increment}>Increment</button>
+<button onClick={decrement}>Decrement</button>
+```
