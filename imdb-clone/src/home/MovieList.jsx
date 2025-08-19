@@ -1,16 +1,22 @@
 import React from 'react'
 
-function MovieList({ poster_path, original_title }) {
+function MovieList({ poster_path, original_title, handleWatchlist, movieObj }) {
   return (
     <div className="p-5">
       <div
-        className="h-[40vh] w-48 flex bg-cover bg-center rounded relative hover:scale-110 duration-300 hover:cursor-pointer group"
+        className="h-[40vh] w-48 bg-cover bg-center rounded-2xl relative overflow-hidden shadow-lg hover:scale-105 duration-300 hover:cursor-pointer group"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original/${poster_path})`,
         }}
       >
-        <div className="absolute bottom-0 left-0 right-0 text-white p-2 bg-gray-900/70 text-center opacity-0 group-hover:opacity-100 duration-300">
-          {original_title}
+        {/* Like / Favorite Button */}
+        <div className="absolute top-2 right-2 bg-black/60 text-red-500 rounded-full h-9 w-9 flex items-center justify-center text-xl opacity-80 hover:scale-125 hover:opacity-100 duration-300 cursor-pointer" onClick={()=> handleWatchlist(movieObj)}>
+          &#129505;
+        </div>
+
+        {/* Title Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 text-white p-2 bg-gradient-to-t from-black/80 via-black/50 to-transparent text-center opacity-0 group-hover:opacity-100 duration-300">
+          <p className="text-sm font-semibold truncate">{original_title}</p>
         </div>
       </div>
     </div>
