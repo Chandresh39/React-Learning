@@ -15,10 +15,16 @@ function Home() {
     })
   }, [])
 
-  function handleWatchlist(movieObj){
-    setWatchlist([...watchlist, movieObj])
-    console.log([...watchlist, movieObj])
+  function handleWatchlist(movieObj) {
+  if (watchlist.some((m) => m.id === movieObj.id)) {
+    // Remove if already present
+    setWatchlist(watchlist.filter((m) => m.id !== movieObj.id));
+  } else {
+    // Add new movie
+    setWatchlist([...watchlist, movieObj]);
   }
+}
+
 
   return (
     <>

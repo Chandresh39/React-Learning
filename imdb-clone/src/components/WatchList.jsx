@@ -7,7 +7,7 @@ function WatchList() {
       <div className="p-5 flex justify-center">
         <input
           type="text"
-          placeholder="🔍 Search Movies..."
+          placeholder="Search Movies..."
           className="bg-gray-100 px-4 py-2 w-72 sm:w-96 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         />
       </div>
@@ -36,7 +36,7 @@ function WatchList() {
               <th className="py-3 px-4">Sr. No.</th>
               <th className="py-3 px-4">Poster</th>
               <th className="py-3 px-4">Title</th>
-              <th className="py-3 px-4">Rating ⭐</th>
+              <th className="py-3 px-4">Rating</th>
               <th className="py-3 px-4">Genre</th>
               <th className="py-3 px-4 text-center">Action</th>
             </tr>
