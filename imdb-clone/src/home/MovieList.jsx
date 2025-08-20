@@ -1,6 +1,9 @@
 import React from 'react'
 
-function MovieList({ poster_path, original_title, handleWatchlist, movieObj }) {
+function MovieList({ poster_path, original_title, handleWatchlist, movieObj, watchlist }) {
+
+  const isInWatchlist = watchlist.some(m => m.id === movieObj.id)
+
   return (
     <div className="p-5">
       <div
@@ -10,8 +13,10 @@ function MovieList({ poster_path, original_title, handleWatchlist, movieObj }) {
         }}
       >
         {/* Like / Favorite Button */}
-        <div className="absolute top-2 right-2 bg-black/60 text-red-500 rounded-full h-9 w-9 flex items-center justify-center text-xl opacity-80 hover:scale-125 hover:opacity-100 duration-300 cursor-pointer" onClick={()=> handleWatchlist(movieObj)}>
-          &#129505;
+        <div className="absolute top-2 right-2 bg-black/60 rounded-full h-9 w-9 flex items-center justify-center text-xl opacity-80 hover:scale-125 hover:opacity-100 duration-300 cursor-pointer"
+          onClick={() => handleWatchlist(movieObj)}>
+          
+          {isInWatchlist ? "❤️" : "🤍"}
         </div>
 
         {/* Title Overlay */}
