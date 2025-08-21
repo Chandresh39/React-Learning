@@ -2,14 +2,11 @@ import React from 'react'
 import Banner from '../home/Banner'
 import TrendingMovies from '../home/TrendingMovies'
 
-function Home() {
-
-  
-
+function Home({ handleWatchlist, watchlist }) {
   return (
     <>
       <Banner />
-      <TrendingMovies />
+      <TrendingMovies handleWatchlist={handleWatchlist} watchlist={watchlist} />
     </>
   )
 }

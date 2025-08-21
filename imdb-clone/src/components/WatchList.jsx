@@ -1,6 +1,50 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
-function WatchList() {
+function WatchList({ watchlist, handleWatchlist }) {
+  const [search, setSearch] = useState("")
+  const [genres, setGenres] = useState([])
+  const [currGenre, setCurrGenre] = useState("All")
+
+  // Fetch all genres from TMDB API
+  useEffect(() => {
+    axios
+      .get(
+        "https://api.themoviedb.org/3/genre/movie/list?api_key=de129c78859f307157260a20a0534c74&language=en-US"
+      )
+      .then((res) => {
+        setGenres(res.data.genres) // [{id:28,name:"Action"}...]
+      })
+  }, [])
+
+  // Convert genre_ids to readable names
+  function getGenreNames(genreIds) {
+    return genreIds
+      .map((id) => {
+        const g = genres.find((gen) => gen.id === id)
+        return g ? g.name : null
+      })
+      .filter(Boolean)
+      .join(", ")
+  }
+
+  // Create dynamic genre list from movies in watchlist
+  const uniqueGenres = ["All", ...new Set(
+    watchlist.flatMap((movie) =>
+      movie.genre_ids?.map(
+        (id) => genres.find((g) => g.id === id)?.name
+      ) || []
+    ).filter(Boolean)
+  )]
+
+  // Filter by search + genre
+  const filteredMovies = watchlist.filter((movie) => {
+    const matchesSearch = movie.original_title.toLowerCase().includes(search.toLowerCase())
+    const movieGenres = getGenreNames(movie.genre_ids || [])
+    const matchesGenre = currGenre === "All" || movieGenres.includes(currGenre)
+    return matchesSearch && matchesGenre
+  })
+
   return (
     <>
       {/* Search Bar */}
@@ -8,24 +52,27 @@ function WatchList() {
         <input
           type="text"
           placeholder="Search Movies..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="bg-gray-100 px-4 py-2 w-72 sm:w-96 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         />
       </div>
 
-      {/* Genre Filters */}
+      {/* Genre Filter Buttons */}
       <div className="flex flex-wrap justify-center gap-3 mb-5">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-xl shadow hover:bg-blue-600 transition">
-          All Genre
-        </button>
-        <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-xl shadow hover:bg-gray-300 transition">
-          Action
-        </button>
-        <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-xl shadow hover:bg-gray-300 transition">
-          Comedy
-        </button>
-        <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-xl shadow hover:bg-gray-300 transition">
-          Drama
-        </button>
+        {uniqueGenres.map((genre) => (
+          <button
+            key={genre}
+            onClick={() => setCurrGenre(genre)}
+            className={`px-4 py-2 rounded-xl shadow transition ${
+              currGenre === genre
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            {genre}
+          </button>
+        ))}
       </div>
 
       {/* Movie Table */}
@@ -42,25 +89,44 @@ function WatchList() {
             </tr>
           </thead>
           <tbody className="bg-white">
-            <tr className="hover:bg-gray-100 transition">
-              <td className="py-3 px-4 text-gray-700 font-medium">1</td>
-              <td className="py-3 px-4">
-                <div
-                  className="h-28 w-20 bg-cover bg-center rounded-lg shadow-md"
-                  style={{
-                    backgroundImage: `url('https://english.cdn.zeenews.com/sites/default/files/2025/01/16/1635505-jh234-2025-01-16t130115.212.jpg')`,
-                  }}
-                ></div>
-              </td>
-              <td className="py-3 px-4 font-semibold text-gray-800">Narshimha</td>
-              <td className="py-3 px-4 text-yellow-500 font-bold">9.7</td>
-              <td className="py-3 px-4 text-gray-600">Action, Animation</td>
-              <td className="py-3 px-4 text-center">
-                <button className="bg-red-500 text-white px-3 py-1 rounded-lg shadow hover:bg-red-600 transition">
-                  Delete
-                </button>
-              </td>
-            </tr>
+            {filteredMovies.length > 0 ? (
+              filteredMovies.map((movieObj, index) => (
+                <tr key={movieObj.id} className="hover:bg-gray-100 transition">
+                  <td className="py-3 px-4 text-gray-700 font-medium">{index + 1}</td>
+                  <td className="py-3 px-4">
+                    <div
+                      className="h-28 w-20 bg-cover bg-center rounded-lg shadow-md"
+                      style={{
+                        backgroundImage: `url(https://image.tmdb.org/t/p/original/${movieObj.poster_path})`,
+                      }}
+                    ></div>
+                  </td>
+                  <td className="py-3 px-4 font-semibold text-gray-800">
+                    {movieObj.original_title}
+                  </td>
+                  <td className="py-3 px-4 text-yellow-500 font-bold">
+                    {movieObj.vote_average.toFixed(1)}
+                  </td>
+                  <td className="py-3 px-4 text-gray-600">
+                    {getGenreNames(movieObj.genre_ids || [])}
+                  </td>
+                  <td className="py-3 px-4 text-center">
+                    <button
+                      onClick={() => handleWatchlist(movieObj)}
+                      className="bg-red-500 text-white px-3 py-1 rounded-lg shadow hover:bg-red-600 transition"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center py-5 text-gray-500">
+                  No movies found 
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
